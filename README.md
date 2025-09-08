@@ -1,6 +1,6 @@
 # pyHub
 
-Welcome to **pyHub** – a modern, beginner-friendly Python learning and coding platform built by me , for students!
+Welcome to **pyHub** – a modern, beginner-friendly Python learning and coding platform built by me, for students!
 
 ## 🚀 About pyHub
 
@@ -26,7 +26,7 @@ pyHub is designed to help learners of all ages explore Python, solve coding prob
 
 ## 📁 Project Structure
 
-
+```
 /Website
   ├── Landing_page.html
   ├── Courses.html
@@ -39,31 +39,31 @@ pyHub is designed to help learners of all ages explore Python, solve coding prob
   ├── question_page.html
   ├── app.py
   └── ... (images, assets, etc.)
-
+```
 
 ## ⚡ Getting Started
 
 1. **Clone the repository:**
-   
+   ```bash
    git clone https://github.com/TurjoRahman-afk/pyHub_web
    cd pyhub/Website
-   
+   ```
 
 2. **Install dependencies:**
-   
+   ```bash
    pip install flask flask-cors
-   
+   ```
 
 3. **Run the backend:**
-   
+   ```bash
    python app.py
-   
+   ```
 
 4. **Open `Landing_page.html` in your browser to start exploring pyHub!**
 
 ## 👥 Team
 
-It was a course project. I was the frontend and backend developer. It took me aroung one and a half week to build and fix the small issues i had.
+It was a course project. I was the frontend and backend developer. It took me around one and a half week to build and fix the small issues I had.
 
 ## 📣 Contributing
 
