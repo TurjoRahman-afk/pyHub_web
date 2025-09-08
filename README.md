@@ -45,7 +45,7 @@ pyHub is designed to help learners of all ages explore Python, solve coding prob
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/TurjoRahman-afk/pyHub_web
+   git clone https://github.com/TurjoRahman-afk/pyHub_web.git
    cd pyhub/Website
    ```
 
