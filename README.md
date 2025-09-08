@@ -1,22 +1,86 @@
 # pyHub
 
+Welcome to **pyHub** – a modern, beginner-friendly Python learning and coding platform built by me , for students!
 
-A personal website showcasing my proejects and skills. Built  with HTML, CSS and a little bit of JavaScript.
+## 🚀 About pyHub
 
-## Features
+pyHub is designed to help learners of all ages explore Python, solve coding problems, and build real skills. Our platform features a clean, dark-themed interface, interactive problem sets, and a growing set of courses and resources.
 
-- **Landing Page:** A clean, user-friendly landing page with a navigation bar for easy access to different sections.
-- **Courses Section:** Explore curated courses specifically designed for students to learn Python effectively.
-- **Problems Section:** Solve Python problems like on LeetCode, categorized into three difficulty levels: Easy, Medium, and Hard.
-- **Difficulty Filter:** Quickly access all problems of a chosen difficulty (Easy, Medium, or Hard) to focus your practice.
-- **Interactive Code Editor:** A dark-themed code editor designed for comfortable coding sessions directly on the website.
-- **About Us:** Learn about the team behind the website, including the CEO and creators who brought the platform to life.
-- **Backend Functionality:** Fully functional signup, login, and code compilation powered by Python running locally.
+## 🌟 Features
 
-## What You Can Do
+- **User Authentication:** Signup and login system with session tracking.
+- **Profile Dashboard:** See your username and track how many problems you've solved.
+- **Problems Library:** 50+ coding challenges (easy, medium, hard) with instant feedback.
+- **Courses Section:** Browse and search curated Python courses.
+- **Live Code Runner:** Run Python code directly in your browser.
+- **Progress Tracking:** Your solved problems are saved and shown in your profile.
+- **Responsive Design:** Works great on desktop and mobile.
+- **Modern UI:** Beautiful dark theme, animated backgrounds, and interactive elements.
 
-- Browse and access Python courses designed for students.
-- Practice coding by selecting problems from Easy, Medium, or Hard categories.
-- Filter problems to focus on a specific difficulty level and solve multiple problems efficiently.
-- Write and run Python code directly on the website using the integrated code editor.
-- Learn about the creators and the story behind the website in the About Us section.
+## 🛠️ Technologies Used
+
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Python (Flask)
+- **Icons:** Font Awesome
+- **Styling:** Custom CSS, responsive layouts
+
+## 📁 Project Structure
+
+
+/Website
+  ├── Landing_page.html
+  ├── Courses.html
+  ├── home.html
+  ├── question_page.html
+  ├── login.html
+  ├── signup_page.html
+  ├── About_us/
+  │     └── about_us.html
+  ├── question_page.html
+  ├── app.py
+  └── ... (images, assets, etc.)
+
+
+## ⚡ Getting Started
+
+1. **Clone the repository:**
+   
+   git clone https://github.com/TurjoRahman-afk/pyHub_web
+   cd pyhub/Website
+   
+
+2. **Install dependencies:**
+   
+   pip install flask flask-cors
+   
+
+3. **Run the backend:**
+   
+   python app.py
+   
+
+4. **Open `Landing_page.html` in your browser to start exploring pyHub!**
+
+## 👥 Team
+
+It was a course project. I was the frontend and backend developer. It took me aroung one and a half week to build and fix the small issues i had.
+
+## 📣 Contributing
+
+We welcome contributions! Feel free to open issues or submit pull requests for new features, bug fixes, or improvements.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+Copyright <2025> <TurjoRahman-afk>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+**pyHub** – Explore, Learn, and Build with Python!
