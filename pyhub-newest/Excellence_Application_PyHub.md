@@ -1,8 +1,7 @@
-# Excellence Application: PyHub Python Learning Platform
+# PyHub Python Learning Platform
 
 **Team Name:** Eagle's Ace  
 **Project Name:** PyHub - Interactive Python Learning Platform  
-**Target Grade:** 90%  
 **Submission Date:** September 22, 2025
 
 ---
@@ -581,7 +580,6 @@ PyHub demonstrates not only technical proficiency but also understanding of educ
 
 ---
 
-**Total Word Count**: Approximately 2,800 words  
 **Document Prepared By**: Eagle's Ace Development Team  
 **Technical Lead**: Turjo (麦子都)  
 **Date**: September 22, 2025
