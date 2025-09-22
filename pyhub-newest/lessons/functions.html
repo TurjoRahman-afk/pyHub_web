@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Functions - PyHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #18181a;
+      --header: #232324;
+      --card: #232324;
+      --text: #e6e6e6;
+      --accent: #fbc02d;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #18181a, #20232a, #18181a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .header {
+      background: var(--header);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+      z-index: 2;
+      position: relative;
+    }
+    .header .logo a, .header .logo {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .header .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1em;
+      opacity: 0.85;
+      transition: color 0.2s;
+    }
+    .header .nav a:hover {
+      color: var(--accent);
+    }
+    .header .auth {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+    .header .auth button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .header .auth button:hover {
+      background: #ffd54f;
+    }
+    #profileCircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      margin-left: 10px;
+    }
+    #profileCircle i {
+      color: #232324;
+      font-size: 1.3em;
+    }
+    #profilePopup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0005;
+      padding: 18px 28px;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #profilePopup div {
+      margin-bottom: 8px;
+    }
+    .headline {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+    }
+    .pop-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: popUpFade 1.2s cubic-bezier(.23,1.01,.32,1) forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes popUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .content {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px 40px 16px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .lesson-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .lesson-title {
+      color: var(--accent);
+      font-size: 2.2em;
+      margin-bottom: 8px;
+    }
+    .lesson-subtitle {
+      color: #ffd54f;
+      font-size: 1.1em;
+      margin-bottom: 0;
+    }
+    .lesson-section {
+      margin-bottom: 32px;
+    }
+    .lesson-section h2 {
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .compiler-box {
+      background: #222;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px #0005;
+    }
+    .compiler-box textarea {
+      width: 100%;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #18181a;
+      color: var(--text);
+      padding: 8px;
+      margin-bottom: 8px;
+      resize: vertical;
+    }
+    .compiler-box button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      transition: background 0.2s;
+    }
+    .compiler-box button:hover {
+      background: #ffd54f;
+    }
+    .output-box {
+      background: #18181a;
+      color: #ffd54f;
+      border-radius: 6px;
+      padding: 8px;
+      min-height: 24px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 1em;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #444;
+    }
+    .lesson-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 32px 0 0 0;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: #232324;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #ffd54f;
+    }
+    @media (max-width: 700px) {
+      .content {
+        max-width: 100%;
+        padding: 0 4px 24px 4px;
+      }
+      .lesson-title { font-size: 1.3em; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <div class="header">
+    <div class="logo">
+      <a href="../Landing_page.html">
+        <i class="fa-solid fa-code"></i> PyHub
+      </a>
+    </div>
+    <div class="nav">
+      <a href="lessons-page.html">Lessons</a>
+      <a href="../home.html">Problems</a>
+      <a href="../About_us/about_us.html">About Us</a>
+    </div>
+    <div class="auth" id="userProfileSection">
+      <div id="profileCircle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div id="profilePopup">
+        <div style="font-weight:bold;font-size:1.1em;margin-bottom:8px;" id="profileUsername">Username</div>
+        <div>Problems Solved: <span id="profileSolved">0</span></div>
+      </div>
+      <button onclick="window.location.href='../signup_page.html'">Signup</button>
+      <button onclick="window.location.href='../login.html'">Login</button>
+    </div>
+  </div>
+
+  <!-- Headline with typewriter and pop-up animation -->
+  <div class="headline pop-up" id="headlineTypewriter"></div>
+  <script>
+    const text = "Learn Functions in Python!";
+    const headline = document.getElementById("headlineTypewriter");
+    let i = 0;
+    function typeWriter() {
+      if (i <= text.length) {
+        headline.innerHTML = text.slice(0, i) + '<span style="border-right:2px solid var(--accent);"></span>';
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        headline.innerHTML = text;
+      }
+    }
+    setTimeout(typeWriter, 600);
+  </script>
+
+  <!-- Page Content -->
+  <div class="content">
+    <div class="lesson-header">
+      <h1 class="lesson-title">Functions</h1>
+      <p class="lesson-subtitle">Learn reusable code blocks, arguments, return values, and more</p>
+    </div>
+
+    <section class="lesson-section">
+      <h2>What is a Function?</h2>
+      <p>Functions are reusable blocks of code for specific tasks. Define once, use anywhere.</p>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Creating a Function</h2>
+      <div class="compiler-box">
+        <textarea id="code1" rows="5">def hello():
+    print("Hello World.")</textarea>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Calling a Function</h2>
+      <div class="compiler-box">
+        <textarea id="code2" rows="3">hello()</textarea>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Example Function Call</h2>
+      <div class="compiler-box">
+        <textarea id="code3" rows="7">def hello():
+    print("Hello World.")
+
+hello()
+hello()
+print("How are you today?")</textarea>
+        <br>
+        <button onclick="runCode('code3','output3')">Run</button>
+        <pre id="output3" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Arguments</h2>
+      <div class="compiler-box">
+        <textarea id="code4" rows="5">def hello(name):
+    print(f"Hello, {name}")
+
+hello("Kevin")</textarea>
+        <br>
+        <button onclick="runCode('code4','output4')">Run</button>
+        <pre id="output4" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Multiple Arguments</h2>
+      <div class="compiler-box">
+        <textarea id="code5" rows="5">def multiply(a, b):
+    print(a * b)
+
+multiply(5, 10)</textarea>
+        <br>
+        <button onclick="runCode('code5','output5')">Run</button>
+        <pre id="output5" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Default Parameters</h2>
+      <div class="compiler-box">
+        <textarea id="code6" rows="6">def function(uni = "Beijing Institute of Technology"):
+    print("I study at " + uni)
+
+function()
+function("Tsinghua University")
+function("New York University")</textarea>
+        <br>
+        <button onclick="runCode('code6','output6')">Run</button>
+        <pre id="output6" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Keyword Arguments</h2>
+      <div class="compiler-box">
+        <textarea id="code7" rows="5">def introduce(name, major):
+    print(f"She is {name}, she is studying {major}")
+
+introduce(major="computer science", name="Karin")</textarea>
+        <br>
+        <button onclick="runCode('code7','output7')">Run</button>
+        <pre id="output7" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Return Values</h2>
+      <div class="compiler-box">
+        <textarea id="code8" rows="5">def addition(x):
+    return 5 + x
+
+result = addition(5)
+result2 = addition(6)
+print(result, result2)</textarea>
+        <br>
+        <button onclick="runCode('code8','output8')">Run</button>
+        <pre id="output8" class="output-box"></pre>
+      </div>
+    </section>
+
+    <section class="lesson-section">
+      <h2>Pass</h2>
+      <div class="compiler-box">
+        <textarea id="code9" rows="3">def function():
+    pass</textarea>
+      </div>
+    </section>
+
+    <div class="lesson-navigation">
+      <a href="lessons-page.html" class="nav-btn prev-btn">🏠 Home</a>
+      <a href="exercise-two.html" class="nav-btn next-btn">Next →</a>
+    </div>
+  </div>
+
+  <!-- Skulpt Library -->
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+  <script>
+    function outf(text, outputId) {
+      document.getElementById(outputId).innerHTML += text;
+    }
+    function runCode(codeId, outputId) {
+      let prog = document.getElementById(codeId).value;
+      document.getElementById(outputId).innerHTML = "";
+      Sk.configure({ output: (text) => outf(text, outputId), read: builtinRead });
+      Sk.misceval.asyncToPromise(() =>
+        Sk.importMainWithBody("<stdin>", false, prog, true)
+      );
+    }
+    function builtinRead(x) {
+      if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+        throw "File not found: '" + x + "'";
+      return Sk.builtinFiles["files"][x];
+    }
+  </script>
+  <script>
+    // Profile logic
+    const user = {
+      username: localStorage.getItem('username') || "Guest",
+      solved: JSON.parse(localStorage.getItem('solvedProblems') || '[]').length
+    };
+
+    document.getElementById("profileUsername").innerText = user.username;
+    document.getElementById("profileSolved").innerText = user.solved;
+
+    const profileCircle = document.getElementById("profileCircle");
+    const profilePopup = document.getElementById("profilePopup");
+    profileCircle.onclick = function(e) {
+      profilePopup.style.display = profilePopup.style.display === "none" ? "block" : "none";
+      e.stopPropagation();
+    };
+    document.body.onclick = function() {
+      profilePopup.style.display = "none";
+    };
+    profilePopup.onclick = function(e) {
+      e.stopPropagation();
+    };
+  </script>
+</body>
+</html>

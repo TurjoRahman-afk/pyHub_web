@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Handling in Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #18181a;
+      --header: #232324;
+      --card: #232324;
+      --text: #e6e6e6;
+      --accent: #fbc02d;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #18181a, #20232a, #18181a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .header {
+      background: var(--header);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+      z-index: 2;
+      position: relative;
+    }
+    .header .logo a, .header .logo {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .header .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1em;
+      opacity: 0.85;
+      transition: color 0.2s;
+    }
+    .header .nav a:hover {
+      color: var(--accent);
+    }
+    .header .auth {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+    .header .auth button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .header .auth button:hover {
+      background: #ffd54f;
+    }
+    #profileCircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      margin-left: 10px;
+    }
+    #profileCircle i {
+      color: #232324;
+      font-size: 1.3em;
+    }
+    #profilePopup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0005;
+      padding: 18px 28px;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #profilePopup div {
+      margin-bottom: 8px;
+    }
+    .headline {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+    }
+    .pop-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: popUpFade 1.2s cubic-bezier(.23,1.01,.32,1) forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes popUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .lesson-content {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px 40px 16px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .lesson-title {
+      color: var(--accent);
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 32px;
+    }
+    .lesson-section {
+      margin-bottom: 32px;
+    }
+    .lesson-section h2 {
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .lesson-section pre {
+      background: #18181a;
+      color: #ffd54f;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 1em;
+      margin-bottom: 8px;
+      border: 1px solid #444;
+      white-space: pre-wrap;
+    }
+    .lesson-section ul, .lesson-section ol {
+      color: var(--text);
+      font-size: 1em;
+      margin-bottom: 8px;
+    }
+    .lesson-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 32px 0 0 0;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: #232324;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #ffd54f;
+    }
+    @media (max-width: 700px) {
+      .lesson-content {
+        max-width: 100%;
+        padding: 0 4px 24px 4px;
+      }
+      .lesson-title { font-size: 1.3em; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <div class="header">
+    <div class="logo">
+      <a href="../Landing_page.html">
+        <i class="fa-solid fa-code"></i> PyHub
+      </a>
+    </div>
+    <div class="nav">
+      <a href="lessons-page.html">Lessons</a>
+      <a href="../home.html">Problems</a>
+      <a href="../About_us/about_us.html">About Us</a>
+    </div>
+    <div class="auth" id="userProfileSection">
+      <div id="profileCircle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div id="profilePopup">
+        <div style="font-weight:bold;font-size:1.1em;margin-bottom:8px;" id="profileUsername">Username</div>
+        <div>Problems Solved: <span id="profileSolved">0</span></div>
+      </div>
+      <button onclick="window.location.href='../signup_page.html'">Signup</button>
+      <button onclick="window.location.href='../login.html'">Login</button>
+    </div>
+  </div>
+
+  <!-- Headline with typewriter and pop-up animation -->
+  <div class="headline pop-up" id="headlineTypewriter"></div>
+  <script>
+    const text = "Learn Storing Data or Retrieving Data From Files";
+    const headline = document.getElementById("headlineTypewriter");
+    let i = 0;
+    function typeWriter() {
+      if (i <= text.length) {
+        headline.innerHTML = text.slice(0, i) + '<span style="border-right:2px solid var(--accent);"></span>';
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        headline.innerHTML = text;
+      }
+    }
+    setTimeout(typeWriter, 600);
+  </script>
+
+  <div class="lesson-content">
+    <h1 class="lesson-title">File Handling in Python</h1>
+
+    <div class="lesson-section">
+      <h2>Reading/Writing Text Files</h2>
+      <p>
+        The process of storing data to a file (writing) or retrieving data from a file (reading) so that information can persist outside the program, be shared, or be used later.
+      </p>
+    </div>
+
+    <div class="lesson-section">
+      <h2>Writing to a Text File</h2>
+      <pre>
+with open("team.txt", "w") as file:
+    file.write("Hello, Eagle's Ace. These are the members.\n")
+    file.write("1. CEO is Turjo\n")
+    file.write("2. CTO is Courtney\n")
+    file.write("3. CIO is Andrew\n")
+    file.write("4. Designers & Document Writers are Keisha and Aya\n")
+    file.write("5. Tester is Yasir\n")
+      </pre>
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li><code>"team.txt"</code> → the name of the file we are creating.</li>
+        <li><code>"w"</code> → write mode → creates the file if it doesn’t exist, or overwrites it if it already exists.</li>
+        <li><code>with</code> → ensures Python automatically closes the file after writing.</li>
+        <li><code>file.write()</code> → writes the text into the file.</li>
+      </ul>
+      <p><strong>After this block, team.txt will look like:</strong></p>
+      <pre>
+Hello, Eagle's Ace. These are the members.
+1. CEO is Turjo
+2. CTO is Courtney
+3. CIO is Andrew
+4. Designers & Document Writers are Keisha and Aya
+5. Tester is Yasir
+      </pre>
+    </div>
+
+    <div class="lesson-section">
+      <h2>Reading from the Text File</h2>
+      <pre>
+print("Reading the file:")
+with open("team.txt", "r") as file:
+    content = file.read()
+    print("Full content:\n" + content)
+   
+    file.seek(0)
+   
+    print("\nLine by line:")
+    for i, line in enumerate(file, 1):
+        print(f"Line {i}: {line.strip()}")
+      </pre>
+      <p><strong>Step by Step:</strong></p>
+      <ul>
+        <li><code>"r"</code> → read mode → opens the file to read only.</li>
+        <li><code>file.read()</code> → reads the entire file content as a single string.</li>
+        <li><code>file.seek(0)</code> → moves the file pointer back to the beginning.</li>
+        <li><code>for i, line in enumerate(file, 1):</code> → reads one line at a time with line numbers.</li>
+        <li><code>line.strip()</code> → removes spaces or newlines at the start/end.</li>
+      </ul>
+      <p><strong>Example Output:</strong></p>
+      <pre>
+Line 1: Hello, Eagle's Ace. These are the members.
+Line 2: 1. CEO is Turjo
+Line 3: 2. CTO is Courtney
+...
+      </pre>
+    </div>
+
+    <div class="lesson-section">
+      <h2>Appending to a File</h2>
+      <pre>
+with open("team.txt", "a") as file:
+    file.write("6. Python Expert: You!\n")
+      </pre>
+      <p><code>"a"</code> → append mode → adds new content at the end of the file without deleting existing content.</p>
+      <p><strong>After this, team.txt will now have:</strong></p>
+      <pre>
+6. Python Expert: You!
+      </pre>
+    </div>
+
+    <div class="lesson-section">
+      <h2>Full Code Example</h2>
+      <pre>
+def text_file_demo():
+    # WRITING to a text file
+    with open("team.txt", "w") as file:
+        file.write("Hello, Eagle's Ace. These are the members.\n")
+        file.write("1. CEO is Turjo\n")
+        file.write("2. CTO is Courtney\n")
+        file.write("3. CIO is Andrew\n")
+        file.write("4. Designers & Document Writers are Keisha and Aya\n")
+        file.write("5. Tester is Yasir\n")
+   
+    # READING from the text file
+    print("Reading the file:")
+    with open("team.txt", "r") as file:
+        # Read entire content at once
+        content = file.read()
+        print("Full content:\n" + content)
+       
+        # Reset to beginning of file
+        file.seek(0)
+       
+        # Read line by line
+        print("\nLine by line:")
+        for i, line in enumerate(file, 1):
+            print(f"Line {i}: {line.strip()}")
+   
+    # APPENDING to the text file
+    with open("team.txt", "a") as file:
+        file.write("6. Python Expert: You!\n")
+
+
+# Run the text file demo
+text_file_demo()
+      </pre>
+    </div>
+  
+
+    <div class="lesson-navigation">
+      <a href="lessons-page.html" class="nav-btn prev-btn">← Previous</a>
+      <a href="filehandling-second.html" class="nav-btn next-btn">Next →</a>
+    </div>
+  </div>
+  <script>
+    // Profile logic
+    const user = {
+      username: localStorage.getItem('username') || "Guest",
+      solved: JSON.parse(localStorage.getItem('solvedProblems') || '[]').length
+    };
+
+    document.getElementById("profileUsername").innerText = user.username;
+    document.getElementById("profileSolved").innerText = user.solved;
+
+    const profileCircle = document.getElementById("profileCircle");
+    const profilePopup = document.getElementById("profilePopup");
+    profileCircle.onclick = function(e) {
+      profilePopup.style.display = profilePopup.style.display === "none" ? "block" : "none";
+      e.stopPropagation();
+    };
+    document.body.onclick = function() {
+      profilePopup.style.display = "none";
+    };
+    profilePopup.onclick = function(e) {
+      e.stopPropagation();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 4 - PyHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #18181a;
+      --header: #232324;
+      --card: #232324;
+      --text: #e6e6e6;
+      --accent: #fbc02d;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #18181a, #20232a, #18181a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .header {
+      background: var(--header);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+      z-index: 2;
+      position: relative;
+    }
+    .header .logo a, .header .logo {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .header .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1em;
+      opacity: 0.85;
+      transition: color 0.2s;
+    }
+    .header .nav a:hover {
+      color: var(--accent);
+    }
+    .header .auth {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+    .header .auth button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .header .auth button:hover {
+      background: #ffd54f;
+    }
+    #profileCircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      margin-left: 10px;
+    }
+    #profileCircle i {
+      color: #232324;
+      font-size: 1.3em;
+    }
+    #profilePopup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0005;
+      padding: 18px 28px;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #profilePopup div {
+      margin-bottom: 8px;
+    }
+    .headline {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+    }
+    .pop-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: popUpFade 1.2s cubic-bezier(.23,1.01,.32,1) forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes popUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .lesson-content {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px 40px 16px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .lesson-title {
+      color: var(--accent);
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 32px;
+    }
+    .exercise-box {
+      background: #222;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px #0005;
+    }
+    .exercise-box h2 {
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .exercise-box pre {
+      background: #18181a;
+      color: #ffd54f;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 1em;
+      margin-bottom: 8px;
+      border: 1px solid #444;
+    }
+    .answer-box {
+      width: 60%;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #18181a;
+      color: var(--text);
+      padding: 8px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .exercise-box button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      transition: background 0.2s;
+    }
+    .exercise-box button:hover {
+      background: #ffd54f;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 8px 0;
+    }
+    .options li {
+      background: #18181a;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      border: 1px solid #444;
+      transition: background 0.2s, color 0.2s;
+    }
+    .options li:hover {
+      background: var(--accent);
+      color: #232324;
+    }
+    .answer-feedback {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    .lesson-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 32px 0 0 0;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: #232324;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #ffd54f;
+    }
+    @media (max-width: 700px) {
+      .lesson-content {
+        max-width: 100%;
+        padding: 0 4px 24px 4px;
+      }
+      .lesson-title { font-size: 1.3em; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <div class="header">
+    <div class="logo">
+      <a href="../Landing_page.html">
+        <i class="fa-solid fa-code"></i> PyHub
+      </a>
+    </div>
+    <div class="nav">
+      <a href="lessons-page.html">Lessons</a>
+      <a href="../home.html">Problems</a>
+      <a href="../About_us/about_us.html">About Us</a>
+    </div>
+    <div class="auth" id="userProfileSection">
+      <div id="profileCircle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div id="profilePopup">
+        <div style="font-weight:bold;font-size:1.1em;margin-bottom:8px;" id="profileUsername">Username</div>
+        <div>Problems Solved: <span id="profileSolved">0</span></div>
+      </div>
+      <button onclick="window.location.href='../signup_page.html'">Signup</button>
+      <button onclick="window.location.href='../login.html'">Login</button>
+    </div>
+  </div>
+
+  <!-- Headline -->
+  <div class="headline pop-up" id="headlineTypewriter"></div>
+  <script>
+    const text = "Exercise 4: Python OOP Practice";
+    const headline = document.getElementById("headlineTypewriter");
+    let i = 0;
+    function typeWriter() {
+      if (i <= text.length) {
+        headline.innerHTML = text.slice(0, i) + '<span style="border-right:2px solid var(--accent);"></span>';
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        headline.innerHTML = text;
+      }
+    }
+    setTimeout(typeWriter, 600);
+  </script>
+
+  <div class="lesson-content">
+
+    <!-- Question 1 -->
+    <div class="exercise-box">
+      <h2>1. What will be printed?</h2>
+      <pre>
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+dog = Animal("Coki")
+print(dog.name)
+      </pre>
+      <input type="text" class="answer-box" id="q1" placeholder="Type your answer here">
+      <button onclick="checkAnswer(1, 'Coki')">Check Answer</button>
+      <div id="ans1" class="answer-feedback"></div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="exercise-box">
+      <h2>2. What does student.speak() output?</h2>
+      <pre>
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        print(self.name + " says good morning!")
+
+student = Person("Aya")
+student.speak()
+      </pre>
+      <input type="text" class="answer-box" id="q2" placeholder="Type your answer here">
+      <button onclick="checkAnswer(2, 'Aya says good morning!')">Check Answer</button>
+      <div id="ans2" class="answer-feedback"></div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="exercise-box">
+      <h2>3. What is printed when print(coffee) runs?</h2>
+      <pre>
+class drink:
+    def __init__(self, name, color):
+        self.name = name
+        self.color = color
+
+    def __str__(self):
+        return f"{self.name} is {self.color}"
+
+coffee = drink("Coffee", "Black")
+print(coffee)
+      </pre>
+      <input type="text" class="answer-box" id="q3" placeholder="Type your answer here">
+      <button onclick="checkAnswer(3, 'Coffee is Black')">Check Answer</button>
+      <div id="ans3" class="answer-feedback"></div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="exercise-box">
+      <h2>4. Which method is executed, parent or child?</h2>
+      <pre>
+class Vehicle:
+    def move(self):
+        print("Move!")
+
+class Car(Vehicle):
+    pass
+
+mycar = Car()
+mycar.move()
+      </pre>
+      <input type="text" class="answer-box" id="q4" placeholder="Type your answer here">
+      <button onclick="checkAnswer(4, 'Parent')">Check Answer</button>
+      <div id="ans4" class="answer-feedback"></div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="exercise-box">
+      <h2>5. What is printed?</h2>
+      <pre>
+class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+class Car(Vehicle):
+    def __init__(self, brand, model):
+        super().__init__(brand)
+        self.model = model
+
+mycar = Car("Ford", "Mustang")
+print(mycar.brand, mycar.model)
+      </pre>
+      <input type="text" class="answer-box" id="q5" placeholder="Type your answer here">
+      <button onclick="checkAnswer(5, 'Ford Mustang')">Check Answer</button>
+      <div id="ans5" class="answer-feedback"></div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="exercise-box">
+      <h2>6. What is the output after modifying the age?</h2>
+      <pre>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+p = Person("Aya", 25)
+p.age = 30
+print(p.age)
+      </pre>
+      <input type="text" class="answer-box" id="q6" placeholder="Type your answer here">
+      <button onclick="checkAnswer(6, '30')">Check Answer</button>
+      <div id="ans6" class="answer-feedback"></div>
+    </div>
+
+  </div>
+
+  <div class="lesson-navigation">
+    <a href="exercise1.html" class="nav-btn prev-btn">← Previous</a>
+    <a href="lessons-page.html" class="nav-btn next-btn">🏠 Home</a>
+  </div>
+
+  <script>
+    // Answer key
+    const answers = {
+      1: 'Coki',
+      2: 'Aya says good morning!',
+      3: 'Coffee is Black',
+      4: 'Parent',
+      5: 'Ford Mustang',
+      6: '30'
+    };
+
+    function checkAnswer(qnum, choice) {
+      const ansDiv = document.getElementById('ans' + qnum);
+      let userInput;
+
+      if ([1,2,3,4,5,6].includes(qnum)) {
+        userInput = document.getElementById('q' + qnum).value.trim();
+        if (userInput === answers[qnum]) {
+          ansDiv.innerHTML = `<span style="color:#0f0;">Correct ✅</span>`;
+        } else {
+          ansDiv.innerHTML = `<span style="color:#f00;">Wrong ❌ — Correct: <span style="color:#facc15;">${answers[qnum]}</span></span>`;
+        }
+      }
+    }
+  </script>
+
+  <script>
+    // Profile logic
+    const user = {
+      username: localStorage.getItem('username') || "Guest",
+      solved: JSON.parse(localStorage.getItem('solvedProblems') || '[]').length
+    };
+
+    document.getElementById("profileUsername").innerText = user.username;
+    document.getElementById("profileSolved").innerText = user.solved;
+
+    const profileCircle = document.getElementById("profileCircle");
+    const profilePopup = document.getElementById("profilePopup");
+    profileCircle.onclick = function(e) {
+      profilePopup.style.display = profilePopup.style.display === "none" ? "block" : "none";
+      e.stopPropagation();
+    };
+    document.body.onclick = function() {
+      profilePopup.style.display = "none";
+    };
+    profilePopup.onclick = function(e) {
+      e.stopPropagation();
+    };
+  </script>
+</body>
+</html>

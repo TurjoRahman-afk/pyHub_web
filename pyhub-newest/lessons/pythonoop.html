@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 10 - Python OOP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #18181a;
+      --header: #232324;
+      --card: #232324;
+      --text: #e6e6e6;
+      --accent: #fbc02d;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #18181a, #20232a, #18181a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .header {
+      background: var(--header);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+      z-index: 2;
+      position: relative;
+    }
+    .header .logo a, .header .logo {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .header .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1em;
+      opacity: 0.85;
+      transition: color 0.2s;
+    }
+    .header .nav a:hover {
+      color: var(--accent);
+    }
+    .header .auth {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+    .header .auth button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .header .auth button:hover {
+      background: #ffd54f;
+    }
+    #profileCircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      margin-left: 10px;
+    }
+    #profileCircle i {
+      color: #232324;
+      font-size: 1.3em;
+    }
+    #profilePopup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0005;
+      padding: 18px 28px;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #profilePopup div {
+      margin-bottom: 8px;
+    }
+    .headline {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+    }
+    .pop-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: popUpFade 1.2s cubic-bezier(.23,1.01,.32,1) forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes popUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .lesson-content {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px 40px 16px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .lesson-title {
+      color: var(--accent);
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 32px;
+    }
+    .lesson-section {
+      margin-bottom: 32px;
+    }
+    .lesson-section h2 {
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .lesson-section pre {
+      background: #18181a;
+      color: #ffd54f;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 1em;
+      margin-bottom: 8px;
+      border: 1px solid #444;
+      white-space: pre-wrap;
+    }
+    .lesson-section p {
+      margin-bottom: 10px;
+    }
+    .lesson-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 32px 0 0 0;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: #232324;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #ffd54f;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <div class="header">
+    <div class="logo">
+      <a href="../Landing_page.html">
+        <i class="fa-solid fa-code"></i> PyHub
+      </a>
+    </div>
+    <div class="nav">
+      <a href="lessons-page.html">Lessons</a>
+      <a href="../home.html">Problems</a>
+      <a href="../About_us/about_us.html">About Us</a>
+    </div>
+    <div class="auth" id="userProfileSection">
+      <div id="profileCircle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div id="profilePopup">
+        <div style="font-weight:bold;font-size:1.1em;margin-bottom:8px;" id="profileUsername">Username</div>
+        <div>Problems Solved: <span id="profileSolved">0</span></div>
+      </div>
+      <button onclick="window.location.href='../signup_page.html'">Signup</button>
+      <button onclick="window.location.href='../login.html'">Login</button>
+    </div>
+  </div>
+
+  <!-- Headline -->
+  <div class="headline pop-up" id="headlineTypewriter"></div>
+  <script>
+    const text = "Python Object-Oriented Programming";
+    const headline = document.getElementById("headlineTypewriter");
+    let i = 0;
+    function typeWriter() {
+      if (i <= text.length) {
+        headline.innerHTML = text.slice(0, i) + '<span style="border-right:2px solid var(--accent);"></span>';
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        headline.innerHTML = text;
+      }
+    }
+    setTimeout(typeWriter, 600);
+  </script>
+
+  <!-- Lesson Content -->
+  <div class="lesson-content">
+
+    <div class="lesson-section">
+      <h2>10. Python OOP</h2>
+      <p>
+        Object-Oriented Programming (OOP) structures code with <b>classes</b> and <b>objects</b>.  
+        It makes large programs easier to manage, reuse, and extend.
+      </p>
+    </div>
+
+    <!-- Classes/Objects -->
+    <div class="lesson-section">
+      <h2>Classes and Objects</h2>
+      <p>Classes are blueprints, and objects are actual instances built from them.</p>
+      <pre>
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def coffee(self):
+        print(f"{self.name} Buys Coffee.")
+
+person1 = Person("Jackie")
+person2 = Person("Maya")
+
+person1.coffee()
+person2.coffee()
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Jackie Buys Coffee.
+Maya Buys Coffee.
+      </pre>
+    </div>
+
+    <!-- __str__ -->
+    <div class="lesson-section">
+      <h2>The __str__() Method</h2>
+      <p>Defines how objects are displayed when printed, making them more readable.</p>
+      <pre>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name}({self.age})"
+
+p1 = Person("Keisha", 20)
+print(p1)
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Keisha(20)
+      </pre>
+    </div>
+
+    <!-- Methods -->
+    <div class="lesson-section">
+      <h2>Creating Methods</h2>
+      <p>Methods are functions inside classes that define object behavior.</p>
+      <pre>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def myfunc(self):
+        print("Hello my name is " + self.name)
+
+p1 = Person("Keisha", 36)
+p1.myfunc()
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Hello my name is Keisha
+      </pre>
+    </div>
+
+    <!-- self -->
+    <div class="lesson-section">
+      <h2>The self Parameter</h2>
+      <p><code>self</code> represents the current instance and is used to access attributes and methods.</p>
+      <pre>
+class Person:
+    def __init__(mystuffhere, name, job):
+        mystuffhere.name = name
+        mystuffhere.job = job
+
+    def myfunc(xyz):
+        print("Hello my name is " + xyz.name)
+        print("I am a " + xyz.job)
+
+p1 = Person("Keisha", "Student")
+p1.myfunc()
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Hello my name is Keisha
+I am a Student
+      </pre>
+    </div>
+
+    <!-- Modify Properties -->
+    <div class="lesson-section">
+      <h2>Modifying Object Properties</h2>
+      <p>You can change attributes of objects even after creation.</p>
+      <pre>
+p1 = Person("Keisha", "Student")
+p1.job = "Teacher"
+print(p1.job)
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Teacher
+      </pre>
+    </div>
+
+    <!-- Inheritance -->
+    <div class="lesson-section">
+      <h2>Inheritance</h2>
+      <p>Inheritance lets one class reuse and extend another class’s features.</p>
+      <pre>
+class Beverages:
+    def __init__(self, temp, drink):
+        self.templevel = temp
+        self.drinktype = drink
+
+    def printbeverages(self):
+        print(self.templevel, self.drinktype)
+
+class Order(Beverages):
+    def __init__(self, temp, drink, percentage):
+        super().__init__(temp, drink)
+        self.sugarlevel = percentage
+
+    def receipt(self):
+        print("Hello, your order is", self.templevel, self.drinktype,
+              "with", self.sugarlevel, "sugar.")
+
+x = Order("Ice", "Jasmine Tea", "50%")
+x.receipt()
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Hello, your order is Ice Jasmine Tea with 50% sugar.
+      </pre>
+    </div>
+
+    <!-- Polymorphism -->
+    <div class="lesson-section">
+      <h2>Polymorphism</h2>
+      <p>Polymorphism allows different classes to share the same method name but have different behavior.</p>
+      <pre>
+class Car:
+    def move(self):
+        print("Drive!")
+
+class Boat:
+    def move(self):
+        print("Sail!")
+
+class Plane:
+    def move(self):
+        print("Fly!")
+
+for vehicle in (Car(), Boat(), Plane()):
+    vehicle.move()
+      </pre>
+      <p><strong>Output:</strong></p>
+      <pre>
+Drive!
+Sail!
+Fly!
+      </pre>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="lesson-navigation">
+    <a href="errorhandling.html" class="nav-btn prev-btn">← Previous</a>
+    <a href="lessons-page.html" class="nav-btn next-btn">🏠 Home</a>
+  </div>
+
+  <script>
+    // Profile logic
+    const user = {
+      username: localStorage.getItem('username') || "Guest",
+      solved: JSON.parse(localStorage.getItem('solvedProblems') || '[]').length
+    };
+
+    document.getElementById("profileUsername").innerText = user.username;
+    document.getElementById("profileSolved").innerText = user.solved;
+
+    const profileCircle = document.getElementById("profileCircle");
+    const profilePopup = document.getElementById("profilePopup");
+    profileCircle.onclick = function(e) {
+      profilePopup.style.display = profilePopup.style.display === "none" ? "block" : "none";
+      e.stopPropagation();
+    };
+    document.body.onclick = function() {
+      profilePopup.style.display = "none";
+    };
+    profilePopup.onclick = function(e) {
+      e.stopPropagation();
+    };
+  </script>
+</body>
+</html>

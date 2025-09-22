@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pyHub - Video Lessons</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #18181a;
+      --header: #232324;
+      --card: #232324;
+      --text: #e6e6e6;
+      --accent: #fbc02d;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #18181a, #20232a, #18181a);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .header {
+      background: var(--header);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+      z-index: 2;
+      position: relative;
+    }
+    .header .logo a, .header .logo {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .header .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1em;
+      opacity: 0.85;
+      transition: color 0.2s;
+    }
+    .header .nav a:hover {
+      color: var(--accent);
+    }
+    .header .auth {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+    }
+    .header .auth button {
+      background: var(--accent);
+      color: #232324;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .header .auth button:hover {
+      background: #ffd54f;
+    }
+    #profileCircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      margin-left: 10px;
+    }
+    #profileCircle i {
+      color: #232324;
+      font-size: 1.3em;
+    }
+    #profilePopup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0005;
+      padding: 18px 28px;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #profilePopup div {
+      margin-bottom: 8px;
+    }
+    .headline {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+    }
+    .pop-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: popUpFade 1.2s cubic-bezier(.23,1.01,.32,1) forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes popUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .content {
+      position: relative;
+      min-height: 500px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 2;
+    }
+    .courses-title {
+      font-size: 1.3em;
+      color: var(--accent);
+      margin-bottom: 18px;
+      margin-top: 40px;
+    }
+    .section-divider {
+      margin: 40px 0 20px 0;
+      border: none;
+      border-top: 2px solid var(--accent);
+    }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      margin-bottom: 40px;
+      width: 100%;
+    }
+    .video-card {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s, border 0.3s;
+      border: 2px solid transparent;
+    }
+    .video-card:hover {
+      transform: translateY(-6px);
+      border: 2px solid var(--accent);
+    }
+    .video-title {
+      color: var(--accent);
+      font-size: 1.1em;
+      margin: 12px 0 0 0;
+      text-align: center;
+    }
+    .video-player {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      background: #232324;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px #0005;
+    }
+    @media (max-width: 900px) {
+      .headline { font-size: 2em; }
+      .content { min-height: 320px; }
+      .videos-grid { gap: 12px; }
+      .video-player { max-width: 100%; }
+    }
+    @media (max-width: 600px) {
+      .header { flex-direction: column; height: auto; padding: 12px 8px; }
+      .headline { font-size: 1.2em; margin-top: 20px; margin-bottom: 15px; }
+      .content { min-height: 180px; }
+      .videos-grid { grid-template-columns: 1fr; gap: 8px; }
+      .video-player { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <div class="header">
+    <div class="logo">
+      <a href="../Landing_page.html">
+        <i class="fa-solid fa-code"></i> pyHub
+      </a>
+    </div>
+    <div class="nav">
+      <a href="../Landing_page.html">Home</a>
+      <a href="lessons-page.html">Courses</a>
+      <a href="../home.html">Problems</a>
+      <a href="../About_us/about_us.html">About Us</a>
+    </div>
+    <div class="auth" id="userProfileSection">
+      <div id="profileCircle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div id="profilePopup">
+        <div style="font-weight:bold;font-size:1.1em;margin-bottom:8px;" id="profileUsername">Username</div>
+        <div>Problems Solved: <span id="profileSolved">0</span></div>
+      </div>
+      <button onclick="window.location.href='../signup_page.html'">Signup</button>
+      <button onclick="window.location.href='../login.html'">Login</button>
+    </div>
+  </div>
+
+  <div class="headline pop-up" id="headlineTypewriter"></div>
+  <script>
+    const text = "Watch and Learn with pyHub Video Lessons 🎥";
+    const headline = document.getElementById("headlineTypewriter");
+    let i = 0;
+    function typeWriter() {
+      if (i <= text.length) {
+        headline.innerHTML = text.slice(0, i) + '<span style="border-right:2px solid var(--accent);"></span>';
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        headline.innerHTML = text;
+      }
+    }
+    setTimeout(typeWriter, 600);
+  </script>
+
+  <div class="content">
+    <hr class="section-divider">
+    <h1 class="courses-title">Courses: Section 5 (Videos)</h1>
+    <section class="videos-grid">
+      <div class="video-card">
+        <video class="video-player" controls poster="./images2/video-thumb1.png">
+          <source src="./videos/python-intro.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-title">Intro to Python (Video)</div>
+      </div>
+      <div class="video-card">
+        <video class="video-player" controls poster="./images2/video-thumb2.png">
+          <source src="./videos/python-basics.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-title">Python Basics (Video)</div>
+      </div>
+      <div class="video-card">
+        <video class="video-player" controls poster="./images2/video-thumb3.png">
+          <source src="./videos/python-functions.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-title">Functions in Python (Video)</div>
+      </div>
+      <!-- Add more video cards as needed -->
+    </section>
+  </div>
+
+  <script>
+    // Profile logic
+    const user = {
+      username: localStorage.getItem('username') || "Guest",
+      solved: JSON.parse(localStorage.getItem('solvedProblems') || '[]').length
+    };
+
+    document.getElementById("profileUsername").innerText = user.username;
+    document.getElementById("profileSolved").innerText = user.solved;
+
+    const profileCircle = document.getElementById("profileCircle");
+    const profilePopup = document.getElementById("profilePopup");
+    profileCircle.onclick = function(e) {
+      profilePopup.style.display = profilePopup.style.display === "none" ? "block" : "none";
+      e.stopPropagation();
+    };
+    document.body.onclick = function() {
+      profilePopup.style.display = "none";
+    };
+    profilePopup.onclick = function(e) {
+      e.stopPropagation();
+    };
+  </script>
+</body>
+</html>
