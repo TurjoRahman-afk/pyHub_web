@@ -106,7 +106,7 @@ Add screenshots or GIFs here to showcase the UI (e.g., landing page, problem pag
 
 ## 👥 About
 
-This was a course project. I worked on both the frontend and backend. It took around one and a half weeks to build and fix small issues.
+This was a course project. I worked on both the frontend and backend. It took around two and a half weeks to build and fix small issues.
 
 ## 🤝 Contributing
 
